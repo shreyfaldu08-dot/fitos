@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/w_root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@drawable/widget_bg" android:padding="14dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+        <TextView android:id="@+id/w_title" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="FitOS · Today" android:textColor="@color/w_muted" android:textSize="12sp" android:textStyle="bold" />
+        <TextView android:id="@+id/w_tasks" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:background="@drawable/widget_chip" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="3dp" android:paddingBottom="3dp"
+            android:text="Tasks —" android:textColor="@color/w_blue" android:textSize="12sp" android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="bottom" android:layout_marginTop="2dp">
+        <TextView android:id="@+id/w_kcal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="—" android:textColor="@color/w_ink" android:textSize="30sp" android:textStyle="bold" />
+        <TextView android:id="@+id/w_kcal_lab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="6dp" android:layout_marginBottom="5dp"
+            android:text="kcal left" android:textColor="@color/w_muted" android:textSize="13sp" />
+    </LinearLayout>
+    <ProgressBar android:id="@+id/w_bar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp"
+        android:layout_marginTop="4dp" android:max="100" android:progress="0" android:progressTint="@color/w_blue" android:progressBackgroundTint="@color/w_soft" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="10dp">
+        <TextView android:id="@+id/w_water" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="💧 —" android:textColor="@color/w_ink" android:textSize="14sp" />
+        <TextView android:id="@+id/w_steps" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="👟 —" android:textColor="@color/w_ink" android:textSize="14sp" />
+        <Button android:id="@+id/w_add_water" android:layout_width="wrap_content" android:layout_height="36dp" android:minWidth="0dp" android:minHeight="0dp"
+            android:background="@drawable/widget_btn" android:paddingLeft="12dp" android:paddingRight="12dp"
+            android:text="+250 ml" android:textAllCaps="false" android:textColor="@color/w_btn_ink" android:textSize="13sp" android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

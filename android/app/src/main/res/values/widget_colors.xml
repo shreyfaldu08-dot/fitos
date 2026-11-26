@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="w_bg">#FFFFFFFF</color>
+    <color name="w_ink">#FF0F1115</color>
+    <color name="w_muted">#FF5F6B7A</color>
+    <color name="w_blue">#FF2C6FD6</color>
+    <color name="w_soft">#FFE6F0FD</color>
+    <color name="w_btn_ink">#FFFFFFFF</color>
+    <string name="widget_desc">Calories left, water, steps and tasks for today</string>
+    <string name="widget_label">FitOS today</string>
+</resources>

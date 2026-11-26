@@ -1,0 +1,25 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'io.fitos.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'io.fitos.app'
+        minSdk 24
+        targetSdk 34
+        versionCode 5
+        versionName '1.4'
+    }
+
+    buildTypes {
+        release { minifyEnabled false }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

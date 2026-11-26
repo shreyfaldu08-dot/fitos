@@ -1,0 +1,5 @@
+# never publish signing keys
+*.keystore
+*.jks
+local.properties
+build/
