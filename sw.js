@@ -1,5 +1,5 @@
 /* FitOS service worker: keeps the app on the phone so it opens instantly and works offline. */
-const VERSION = "fitos-3.8.3";
+const VERSION = "fitos-3.8.4";
 const APP = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
 const FONTS = "fitos-fonts";
 

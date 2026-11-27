@@ -23,6 +23,10 @@
 
 
 
+
+
+
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -368,18 +372,25 @@ details.more label.f input,details.more label.f select,details.more input.qmname
 .getapp{display:flex;flex-direction:column;gap:12px;padding:6px 2px 2px}
 .ga-logo{display:flex;justify-content:center;margin-bottom:2px}
 .gatiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.gatile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;min-height:138px;padding:14px 8px;border-radius:22px;border:none;cursor:pointer;
-  background:var(--card-2);color:var(--ink);text-decoration:none;font:inherit;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s}
+.gatile{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;text-align:left;min-height:60px;padding:9px 10px;border-radius:18px;border:none;cursor:pointer;
+  background:var(--card-2);color:var(--ink);text-decoration:none;font:inherit;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s;min-width:0}
 .gatile:active{transform:scale(.97)}
-.gatile .gaic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;margin-bottom:6px;background:var(--blue-soft);color:var(--blue-ink)}
-.gatile .gaic svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.gatile .gat{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.gatile b{font-size:14.5px;font-weight:700;white-space:nowrap}
+.gatile small{font-size:12px;opacity:.8;margin-top:2px}
+.gatile.main{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(44,111,214,.3)}
+.gatile .gaic{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--blue-soft);color:var(--blue-ink)}
+.gatile .gaic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .gatile.main .gaic{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+@media (max-width:430px){.gatile{gap:7px;padding:8px}.gatile .gaic{width:30px;height:30px;border-radius:10px}.gatile .gaic svg{width:19px;height:19px}.gatile b{font-size:14px}.gatile small{font-size:11.5px}}
+@media (max-width:345px){.gatile .gaic{display:none}.gatile{justify-content:center;text-align:center}.gatile .gat{align-items:center}}
 .gatile b{font-size:17px;font-weight:700}
 .gatile small{font-size:12.5px;line-height:1.35;opacity:.78}
 .gatile.main{background:var(--blue);color:#fff;box-shadow:0 8px 20px rgba(44,111,214,.35)}
 .gabtn{display:flex!important;align-items:center;gap:14px;text-align:left;justify-content:flex-start;padding:12px 18px;min-height:70px;text-decoration:none}
 .gabtn .gaic{font-size:28px;line-height:1;width:34px;text-align:center}.gabtn .m{display:flex;flex-direction:column;gap:2px}
 .gabtn b{font-size:16.5px}.gabtn small{font-size:12.5px;opacity:.8;font-weight:500}
+.pillic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3.5px;margin-right:7px}
 .installpill{display:block;margin:6px auto 0;border:none;background:rgba(255,255,255,.92);color:#1F62C4;border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(15,40,90,.18)}
 .iosteps.big{font-size:16px;gap:10px}
 .installcard{background:var(--blue-soft);gap:10px}
@@ -1221,8 +1232,8 @@ V.profile=function(){
   <div class="card"><span class="small muted">${esc(statusText||(store&&store.label)||"")}. ${S.workouts.length} exercises, ${S.cardio.length} activities, ${S.meals.length} meals, ${S.body.length} check-ins, ${S.sleep.length} nights.</span>
   ${exportCard()}<button class="btn warn" type="button" data-act="reset">${ui.resetArmed?"Tap again to delete everything":"Delete all my data"}</button></div></div></details>
   </div>
-  <div class="card" style="align-items:center;text-align:center;gap:8px">${logo(64)}<span class="wordmark">Fit<span>OS</span></span><span class="small muted">Version 3.8.3 · Workouts, nutrition, progress, activity and sleep in one place.</span></div>
-  ${IS_WEBAPP?`<button class="btn soft" type="button" data-act="get-app">📲 Get the FitOS app (Android APK or iPhone)</button>`:""}
+  <div class="card" style="align-items:center;text-align:center;gap:8px">${logo(64)}<span class="wordmark">Fit<span>OS</span></span><span class="small muted">Version 3.8.4 · Workouts, nutrition, progress, activity and sleep in one place.</span></div>
+  ${IS_WEBAPP?`<button class="btn soft" type="button" data-act="get-app">${GA_PILL}Get the FitOS app (Android APK or iPhone)</button>`:""}
   <button class="btn soft" type="button" data-act="tour-again">${icon("spark")} Show the quick tour</button>
   ${diagCard()}
   <p class="status-line" id="statusLine">${esc(statusText)}</p>`;
@@ -1233,7 +1244,7 @@ function exportCard(){
 }
 function diagCard(){
   const env=NATIVE?"Android app (APK)":window.claude&&typeof window.claude.use==="function"?"Claude web link":"Browser file";
-  const rows=[["App version","FitOS 3.8.3"],["Running as",env],["Data saved",store?store.label:"—"],["Loaded at start",(ui.loadedFrom||"—")+" · "+(ui.loadedTasks||0)+" checklist tasks"],["Checklist module",S.modules.checklist?"On":"Off"],["Checklist tasks now",`${tasksOf("day").length} daily · ${tasksOf("week").length} weekly · ${tasksOf("month").length} monthly`],["Last save problem",ui.saveErr||"None"],["Browser",(navigator.userAgent.match(/(Chrome|Version)\/[\d.]+/)||["?"])[0]]];
+  const rows=[["App version","FitOS 3.8.4"],["Running as",env],["Data saved",store?store.label:"—"],["Loaded at start",(ui.loadedFrom||"—")+" · "+(ui.loadedTasks||0)+" checklist tasks"],["Checklist module",S.modules.checklist?"On":"Off"],["Checklist tasks now",`${tasksOf("day").length} daily · ${tasksOf("week").length} weekly · ${tasksOf("month").length} monthly`],["Last save problem",ui.saveErr||"None"],["Browser",(navigator.userAgent.match(/(Chrome|Version)\/[\d.]+/)||["?"])[0]]];
   return `<details class="more psec" data-psec="diag" style="background:var(--card)"${ui.popen.diag?" open":""}><summary>Help and problem report</summary><div style="display:flex;flex-direction:column;gap:8px">
   <span class="small muted">If something isn’t working, take a screenshot of this and send it.</span>
   ${rows.map(([k,v])=>`<div class="wrow"><span class="m small muted">${k}</span><b style="font-size:13px;text-align:right">${esc(v)}</b></div>`).join("")}
@@ -1252,7 +1263,7 @@ function obView(){
   let body="";
   if(o.step===0) body=`<div class="lockup" style="margin-top:20px">${logo(56)}<span class="wordmark on-hero">Fit<span>OS</span></span></div>${title("Welcome to FitOS","Let’s set up your plan. It takes about a minute.")}
     <form id="ob0" class="card" style="margin-top:20px"><label class="f">What should we call you?<input name="name" value="${esc(d.name)}" required maxlength="40" autocomplete="given-name"></label><button class="btn" type="submit">Continue</button></form>
-    ${IS_WEBAPP&&!IS_STANDALONE?`<button class="installpill" type="button" data-act="get-app" style="margin-top:16px">📲 Get the FitOS app (Android or iPhone)</button>`:""}`;
+    ${IS_WEBAPP&&!IS_STANDALONE?`<button class="installpill" type="button" data-act="get-app" style="margin-top:16px">${GA_PILL}Get the FitOS app (Android or iPhone)</button>`:""}`;
   if(o.step===1) body=`${title("What’s your main goal?","Your dashboard is arranged around it.")}
     <div class="list" style="margin-top:16px">${Object.entries(GOALS).map(([k,v])=>`<button type="button" class="opt" data-ob-goal="${k}" aria-pressed="${d.goal===k}"><span class="m"><b>${v.label}</b><small>${v.sub}</small></span><span class="ck"></span></button>`).join("")}</div>
     <button class="btn" type="button" data-act="ob-next">Continue</button>`;
@@ -3080,14 +3091,15 @@ function installCard(){
 }
 function installPill(){
   if(!IS_WEBAPP||IS_STANDALONE)return "";
-  return `<button class="installpill" type="button" data-act="get-app">📲 Get the FitOS app</button>`;
+  return `<button class="installpill" type="button" data-act="get-app">${GA_PILL}Get the FitOS app</button>`;
 }
 const IS_ANDROID=/android/i.test(navigator.userAgent);
 const GA_ANDROID=`<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3" width="16" height="26" rx="4"/><path d="M14 25.5h4"/><path d="M16 9v9M12.3 14.6 16 18.3l3.7-3.7"/></svg>`;
+const GA_PILL=`<svg class="pillic" viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3" width="16" height="26" rx="4"/><path d="M14 25.5h4"/><path d="M16 9v9M12.3 14.6 16 18.3l3.7-3.7"/></svg>`;
 const GA_IOS=`<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3" width="16" height="26" rx="4"/><path d="M14 25.5h4"/><rect x="12" y="9" width="8" height="8" rx="2.2"/><path d="M16 11v4M14 13h4"/></svg>`;
 function getAppView(){
-  const apk=`<a class="gatile${IS_IOS?"":" main"}" href="download/FitOS.apk" download="FitOS.apk" data-act="ga-apk"><span class="gaic">${GA_ANDROID}</span><b>Android</b><small>Download the app<br>APK · about 2 MB</small></a>`;
-  const ios=`<button class="gatile${IS_IOS?" main":""}" type="button" data-act="ga-ios"><span class="gaic">${GA_IOS}</span><b>iPhone</b><small>Add to Home Screen<br>works offline</small></button>`;
+  const apk=`<a class="gatile${IS_IOS?"":" main"}" href="download/FitOS.apk" download="FitOS.apk" data-act="ga-apk"><span class="gaic">${GA_ANDROID}</span><span class="gat"><b>Download APK</b></span></a>`;
+  const ios=`<button class="gatile${IS_IOS?" main":""}" type="button" data-act="ga-ios"><span class="gaic">${GA_IOS}</span><span class="gat"><b>iPhone</b><small>Add to Home Screen</small></span></button>`;
   return `<div class="getapp"><div class="ga-logo">${logo(64)}</div>
     <span class="ttl" id="editT" style="font-size:22px;text-align:center">Get FitOS on your phone</span>
     <span class="small muted" style="text-align:center">Free. No app store needed. Pick your phone:</span>
@@ -3132,7 +3144,7 @@ document.addEventListener("click",e=>{
   if(a==="pwa-install"&&installEvt){const ev=installEvt;installEvt=null;try{ev.prompt();Promise.resolve(ev.userChoice).then(r=>{if(!r||r.outcome!=="accepted")installEvt=ev;render()})}catch(_){};return}
   if(a==="ios-guide"||a==="ga-ios"){ui.edit={kind:"iosGuide",id:null};renderEdit();return}
   if(a==="get-app"){ui.edit={kind:"getApp",id:null};renderEdit();return}
-  if(a==="ga-later"){ui.edit=null;renderEdit();toast("You can get the app anytime from the 📲 button on Home");return}
+  if(a==="ga-later"){ui.edit=null;renderEdit();toast("You can get the app anytime from the “Get the FitOS app” button on Home");return}
   if(a==="ios-guide-hide"){S.flags.iosGuideHide=true;ui.edit=null;renderEdit();persist();render();toast("You can add it later from Safari’s Share button");return}
   if(a==="pwa-update"&&ui.updateReady){const w=ui.updateReady.waiting;if(w)w.postMessage("skip");else location.reload();return}
 });
