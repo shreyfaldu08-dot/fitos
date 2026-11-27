@@ -21,6 +21,7 @@
 
 
 
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1217,7 +1218,8 @@ V.profile=function(){
   <div class="card"><span class="small muted">${esc(statusText||(store&&store.label)||"")}. ${S.workouts.length} exercises, ${S.cardio.length} activities, ${S.meals.length} meals, ${S.body.length} check-ins, ${S.sleep.length} nights.</span>
   ${exportCard()}<button class="btn warn" type="button" data-act="reset">${ui.resetArmed?"Tap again to delete everything":"Delete all my data"}</button></div></div></details>
   </div>
-  <div class="card" style="align-items:center;text-align:center;gap:8px">${logo(64)}<span class="wordmark">Fit<span>OS</span></span><span class="small muted">Version 3.8.1 · Workouts, nutrition, progress, activity and sleep in one place.</span></div>
+  <div class="card" style="align-items:center;text-align:center;gap:8px">${logo(64)}<span class="wordmark">Fit<span>OS</span></span><span class="small muted">Version 3.8.2 · Workouts, nutrition, progress, activity and sleep in one place.</span></div>
+  ${IS_WEBAPP?`<button class="btn soft" type="button" data-act="get-app">📲 Get the FitOS app (Android APK or iPhone)</button>`:""}
   <button class="btn soft" type="button" data-act="tour-again">${icon("spark")} Show the quick tour</button>
   ${diagCard()}
   <p class="status-line" id="statusLine">${esc(statusText)}</p>`;
@@ -1228,7 +1230,7 @@ function exportCard(){
 }
 function diagCard(){
   const env=NATIVE?"Android app (APK)":window.claude&&typeof window.claude.use==="function"?"Claude web link":"Browser file";
-  const rows=[["App version","FitOS 3.8.1"],["Running as",env],["Data saved",store?store.label:"—"],["Loaded at start",(ui.loadedFrom||"—")+" · "+(ui.loadedTasks||0)+" checklist tasks"],["Checklist module",S.modules.checklist?"On":"Off"],["Checklist tasks now",`${tasksOf("day").length} daily · ${tasksOf("week").length} weekly · ${tasksOf("month").length} monthly`],["Last save problem",ui.saveErr||"None"],["Browser",(navigator.userAgent.match(/(Chrome|Version)\/[\d.]+/)||["?"])[0]]];
+  const rows=[["App version","FitOS 3.8.2"],["Running as",env],["Data saved",store?store.label:"—"],["Loaded at start",(ui.loadedFrom||"—")+" · "+(ui.loadedTasks||0)+" checklist tasks"],["Checklist module",S.modules.checklist?"On":"Off"],["Checklist tasks now",`${tasksOf("day").length} daily · ${tasksOf("week").length} weekly · ${tasksOf("month").length} monthly`],["Last save problem",ui.saveErr||"None"],["Browser",(navigator.userAgent.match(/(Chrome|Version)\/[\d.]+/)||["?"])[0]]];
   return `<details class="more psec" data-psec="diag" style="background:var(--card)"${ui.popen.diag?" open":""}><summary>Help and problem report</summary><div style="display:flex;flex-direction:column;gap:8px">
   <span class="small muted">If something isn’t working, take a screenshot of this and send it.</span>
   ${rows.map(([k,v])=>`<div class="wrow"><span class="m small muted">${k}</span><b style="font-size:13px;text-align:right">${esc(v)}</b></div>`).join("")}
@@ -1246,7 +1248,8 @@ function obView(){
   const title=(t,s)=>`<h1 style="margin:14px 0 0;font-size:32px;font-weight:500;letter-spacing:-.6px;color:var(--on-hero)">${t}</h1><p style="margin:0;color:var(--on-hero);opacity:.92;font-size:16px">${s}</p>`;
   let body="";
   if(o.step===0) body=`<div class="lockup" style="margin-top:20px">${logo(56)}<span class="wordmark on-hero">Fit<span>OS</span></span></div>${title("Welcome to FitOS","Let’s set up your plan. It takes about a minute.")}
-    <form id="ob0" class="card" style="margin-top:20px"><label class="f">What should we call you?<input name="name" value="${esc(d.name)}" required maxlength="40" autocomplete="given-name"></label><button class="btn" type="submit">Continue</button></form>`;
+    <form id="ob0" class="card" style="margin-top:20px"><label class="f">What should we call you?<input name="name" value="${esc(d.name)}" required maxlength="40" autocomplete="given-name"></label><button class="btn" type="submit">Continue</button></form>
+    ${IS_WEBAPP&&!IS_STANDALONE?`<button class="installpill" type="button" data-act="get-app" style="margin-top:16px">📲 Get the FitOS app (Android or iPhone)</button>`:""}`;
   if(o.step===1) body=`${title("What’s your main goal?","Your dashboard is arranged around it.")}
     <div class="list" style="margin-top:16px">${Object.entries(GOALS).map(([k,v])=>`<button type="button" class="opt" data-ob-goal="${k}" aria-pressed="${d.goal===k}"><span class="m"><b>${v.label}</b><small>${v.sub}</small></span><span class="ck"></span></button>`).join("")}</div>
     <button class="btn" type="button" data-act="ob-next">Continue</button>`;
@@ -3074,7 +3077,6 @@ function installCard(){
 }
 function installPill(){
   if(!IS_WEBAPP||IS_STANDALONE)return "";
-  if(S.flags.iosGuideHide)return "";
   return `<button class="installpill" type="button" data-act="get-app">📲 Get the FitOS app</button>`;
 }
 const IS_ANDROID=/android/i.test(navigator.userAgent);
@@ -3095,8 +3097,8 @@ function apkStepsView(){
   <button class="btn" type="button" data-act="edit-close">Got it</button>`;
 }
 function maybeShowGetApp(){
-  if(!IS_WEBAPP||IS_STANDALONE||S.flags.getAppSeen||ui.edit)return;
-  S.flags.getAppSeen=true;persist();ui.edit={kind:"getApp",id:null};renderEdit();
+  if(!IS_WEBAPP||IS_STANDALONE||ui.edit||ui.getAppShown)return;
+  ui.getAppShown=true;ui.edit={kind:"getApp",id:null};renderEdit();
 }
 function iosGuideView(){
   return `<div class="ch"><div class="t"><span class="eb">Get the app on your iPhone</span><span class="ttl" id="editT">Add FitOS to your Home Screen</span></div><button class="rb" type="button" data-act="edit-close" aria-label="Close">${icon("x")}</button></div>
@@ -3104,7 +3106,7 @@ function iosGuideView(){
   <ol class="iosteps big"><li>Tap the <b>Share</b> button ${SHARE_SVG} at the bottom of Safari (top right on iPad).</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>. FitOS appears on your Home Screen like an app.</li></ol>
   <span class="small muted">From then on, open FitOS from that icon. It works offline and keeps your data on this iPhone. Using Chrome on iPhone? The Share button is in the address bar.</span>
   <button class="btn" type="button" data-act="edit-close">Got it</button>
-  <button class="btn soft sm" type="button" data-act="ios-guide-hide">Don’t show this again</button>`;
+  <button class="btn soft sm" type="button" data-act="get-app">${icon("back")} Back to both options</button>`;
 }
 function updateCard(){
   if(!ui.updateReady)return "";
