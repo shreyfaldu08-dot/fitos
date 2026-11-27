@@ -22,6 +22,7 @@
 
 
 
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -370,7 +371,9 @@ details.more label.f input,details.more label.f select,details.more input.qmname
 .gatile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;min-height:138px;padding:14px 8px;border-radius:22px;border:none;cursor:pointer;
   background:var(--card-2);color:var(--ink);text-decoration:none;font:inherit;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s}
 .gatile:active{transform:scale(.97)}
-.gatile .gaic{font-size:34px;line-height:1;margin-bottom:4px}
+.gatile .gaic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;margin-bottom:6px;background:var(--blue-soft);color:var(--blue-ink)}
+.gatile .gaic svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.gatile.main .gaic{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
 .gatile b{font-size:17px;font-weight:700}
 .gatile small{font-size:12.5px;line-height:1.35;opacity:.78}
 .gatile.main{background:var(--blue);color:#fff;box-shadow:0 8px 20px rgba(44,111,214,.35)}
@@ -1218,7 +1221,7 @@ V.profile=function(){
   <div class="card"><span class="small muted">${esc(statusText||(store&&store.label)||"")}. ${S.workouts.length} exercises, ${S.cardio.length} activities, ${S.meals.length} meals, ${S.body.length} check-ins, ${S.sleep.length} nights.</span>
   ${exportCard()}<button class="btn warn" type="button" data-act="reset">${ui.resetArmed?"Tap again to delete everything":"Delete all my data"}</button></div></div></details>
   </div>
-  <div class="card" style="align-items:center;text-align:center;gap:8px">${logo(64)}<span class="wordmark">Fit<span>OS</span></span><span class="small muted">Version 3.8.2 · Workouts, nutrition, progress, activity and sleep in one place.</span></div>
+  <div class="card" style="align-items:center;text-align:center;gap:8px">${logo(64)}<span class="wordmark">Fit<span>OS</span></span><span class="small muted">Version 3.8.3 · Workouts, nutrition, progress, activity and sleep in one place.</span></div>
   ${IS_WEBAPP?`<button class="btn soft" type="button" data-act="get-app">📲 Get the FitOS app (Android APK or iPhone)</button>`:""}
   <button class="btn soft" type="button" data-act="tour-again">${icon("spark")} Show the quick tour</button>
   ${diagCard()}
@@ -1230,7 +1233,7 @@ function exportCard(){
 }
 function diagCard(){
   const env=NATIVE?"Android app (APK)":window.claude&&typeof window.claude.use==="function"?"Claude web link":"Browser file";
-  const rows=[["App version","FitOS 3.8.2"],["Running as",env],["Data saved",store?store.label:"—"],["Loaded at start",(ui.loadedFrom||"—")+" · "+(ui.loadedTasks||0)+" checklist tasks"],["Checklist module",S.modules.checklist?"On":"Off"],["Checklist tasks now",`${tasksOf("day").length} daily · ${tasksOf("week").length} weekly · ${tasksOf("month").length} monthly`],["Last save problem",ui.saveErr||"None"],["Browser",(navigator.userAgent.match(/(Chrome|Version)\/[\d.]+/)||["?"])[0]]];
+  const rows=[["App version","FitOS 3.8.3"],["Running as",env],["Data saved",store?store.label:"—"],["Loaded at start",(ui.loadedFrom||"—")+" · "+(ui.loadedTasks||0)+" checklist tasks"],["Checklist module",S.modules.checklist?"On":"Off"],["Checklist tasks now",`${tasksOf("day").length} daily · ${tasksOf("week").length} weekly · ${tasksOf("month").length} monthly`],["Last save problem",ui.saveErr||"None"],["Browser",(navigator.userAgent.match(/(Chrome|Version)\/[\d.]+/)||["?"])[0]]];
   return `<details class="more psec" data-psec="diag" style="background:var(--card)"${ui.popen.diag?" open":""}><summary>Help and problem report</summary><div style="display:flex;flex-direction:column;gap:8px">
   <span class="small muted">If something isn’t working, take a screenshot of this and send it.</span>
   ${rows.map(([k,v])=>`<div class="wrow"><span class="m small muted">${k}</span><b style="font-size:13px;text-align:right">${esc(v)}</b></div>`).join("")}
@@ -3080,9 +3083,11 @@ function installPill(){
   return `<button class="installpill" type="button" data-act="get-app">📲 Get the FitOS app</button>`;
 }
 const IS_ANDROID=/android/i.test(navigator.userAgent);
+const GA_ANDROID=`<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3" width="16" height="26" rx="4"/><path d="M14 25.5h4"/><path d="M16 9v9M12.3 14.6 16 18.3l3.7-3.7"/></svg>`;
+const GA_IOS=`<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3" width="16" height="26" rx="4"/><path d="M14 25.5h4"/><rect x="12" y="9" width="8" height="8" rx="2.2"/><path d="M16 11v4M14 13h4"/></svg>`;
 function getAppView(){
-  const apk=`<a class="gatile${IS_IOS?"":" main"}" href="download/FitOS.apk" download="FitOS.apk" data-act="ga-apk"><span class="gaic">🤖</span><b>Android</b><small>Download the app<br>APK · about 2 MB</small></a>`;
-  const ios=`<button class="gatile${IS_IOS?" main":""}" type="button" data-act="ga-ios"><span class="gaic">📱</span><b>iPhone</b><small>Add to Home Screen<br>works offline</small></button>`;
+  const apk=`<a class="gatile${IS_IOS?"":" main"}" href="download/FitOS.apk" download="FitOS.apk" data-act="ga-apk"><span class="gaic">${GA_ANDROID}</span><b>Android</b><small>Download the app<br>APK · about 2 MB</small></a>`;
+  const ios=`<button class="gatile${IS_IOS?" main":""}" type="button" data-act="ga-ios"><span class="gaic">${GA_IOS}</span><b>iPhone</b><small>Add to Home Screen<br>works offline</small></button>`;
   return `<div class="getapp"><div class="ga-logo">${logo(64)}</div>
     <span class="ttl" id="editT" style="font-size:22px;text-align:center">Get FitOS on your phone</span>
     <span class="small muted" style="text-align:center">Free. No app store needed. Pick your phone:</span>
